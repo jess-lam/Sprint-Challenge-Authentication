@@ -7,17 +7,17 @@ module.exports = {
 }
 
 function findby(filter) {
-    return db("auth").where(filter);
+    return db("users").where(filter);
 }
 
-async function add(auth) {
-    const [id] = await db("auth").insert(user, "id");
+async function add(users) {
+    const [id] = await db("users").insert(user, "id");
 
     return findById(id)
 }
 
 function findById(id) {
-    return db("auth")
+    return db("users")
     .select("id", "username", "password")
     .where({ id })
     .first();

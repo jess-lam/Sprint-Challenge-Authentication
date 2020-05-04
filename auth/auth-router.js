@@ -14,11 +14,12 @@ const bcrypt = require("bcryptjs");
 const router = require("express").Router();
 const jwt = require('jsonwebtoken');
 
-const Auth = require("./auth-model");
+const Users = require("./auth-model");
 const { jwtSecret } = require('../config/secrets');
 
 router.post("/register", (req, res) => {
     let userInfo = req.body
+    console.log(userInfo);
     if(!userInfo.username || !userInfo.password) { //checks if the username or password is missing, then throw an error
         res.status(403).json({message: 'Please input both a username and password'}) 
     }
@@ -27,7 +28,7 @@ router.post("/register", (req, res) => {
     const hash = bcrypt.hashSync(userInfo.password, ROUNDS)
 
     userInfo.password = hash;
-    Auth.add(userInfo)
+    Users.add(userInfo)
     .then(user => {
         const token = generateToken(user);
     res.status(201).json(user, token);
@@ -40,7 +41,7 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
     const { username, password } = req.body
 
-    Auth.findby({username})
+    Users.findby({username})
     .then(([user]) => {
         if(user && bcrypt.compareSync(password, user.password)) {
             const token = generateToken(user);
