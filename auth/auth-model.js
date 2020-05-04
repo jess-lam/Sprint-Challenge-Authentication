@@ -10,7 +10,7 @@ function findby(filter) {
     return db("auth").where(filter);
 }
 
-async function add(user) {
+async function add(auth) {
     const [id] = await db("auth").insert(user, "id");
 
     return findById(id)
