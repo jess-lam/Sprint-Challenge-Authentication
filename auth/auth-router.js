@@ -21,7 +21,7 @@ router.post("/register", (req, res) => {
     let userInfo = req.body
     console.log(userInfo);
     if(!userInfo.username || !userInfo.password) { //checks if the username or password is missing, then throw an error
-        res.status(403).json({message: 'Please input both a username and password'}) 
+        res.status(404).json({message: 'Please input both a username and password'}) 
     }
 
     const ROUNDS = process.env.HASHING_ROUNDS || 8;
@@ -31,7 +31,7 @@ router.post("/register", (req, res) => {
     Users.add(userInfo)
     .then(user => {
         const token = generateToken(user);
-    res.status(201).json(user, token);
+    res.status(201).json({user, token});
     })
     .catch((error) => {
         res.status(500).json({message: 'Cannot register user.', error})
@@ -61,8 +61,9 @@ router.post("/login", (req, res) => {
 
 function generateToken(user) {
     const payload = {
+        userid: user.id,
         username: user.username,
-        role: user.department || "user"
+        // role: user.department || "user"
     };
 
     const options = {
@@ -73,3 +74,5 @@ function generateToken(user) {
 }
 
 module.exports = router;
+
+//

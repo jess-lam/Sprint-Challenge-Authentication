@@ -10,11 +10,9 @@ function findby(filter) {
     return db("users").where(filter);
 }
 
-async function add(users) {
-    const [id] = await db("users").insert(user, "id");
-
-    return findById(id)
-}
+function add(users) {
+    return db("users").insert(users)   
+   }
 
 function findById(id) {
     return db("users")
