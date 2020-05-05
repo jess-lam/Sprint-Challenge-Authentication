@@ -1,7 +1,7 @@
 const request = require('supertest');
 const server = require('../api/server');
 
-describe("server.js", function() {
+describe("jokes.js", function() {
     describe("GET /", function() {
         it('should return 200 OK if authorized', async function() {
             const response = await request(server).get("/");

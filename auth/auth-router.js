@@ -29,9 +29,9 @@ router.post("/register", (req, res) => {
 
     userInfo.password = hash;
     Users.add(userInfo)
-    .then(user => {
+    .then(([user]) => {
         const token = generateToken(user);
-    res.status(201).json({user, token});
+    res.status(201).json({user_id: user, token});
     })
     .catch((error) => {
         res.status(500).json({message: 'Cannot register user.', error})
